@@ -16,7 +16,7 @@
     <div class="row" style="flex-wrap:nowrap; display:-webkit-box">
         @for (int j = 0; j < 125; j++)
         {
-        <div class="cell">
+        <div class="cell" id="@(j.ToString()+"-"+i.ToString())">
             <input class="x" type="number" name="x" value="@j" hidden />
             <input class="y" type="number" name="y" value="@i" hidden />
         </div>
@@ -28,28 +28,25 @@
 <script>
     var brush = "red";
     window.onload = function () {
-        $('.cell').bind('click', function (e) {
+        const hubConnection = new signalR.HubConnectionBuilder()
+            .withUrl("/battle")
+            .build();
 
-            $(this).css("background", brush);
+        hubConnection.on("Send", function (x, y, color) {
+            var id = String(x)+"-"+ String(y);
+            var selector = '#' + id;
+            $(selector).css("background", color);
         });
-        
+
+        $('.cell').bind('click', function (e) {
+            $(this).css("background", brush);
+            hubConnection.invoke("Send", $(this).children('.x').val(), $(this).children('.y').val(), brush);
+        });
+
+        hubConnection.start();    
     };
+</script>
 
-
-
-    //$('.card').bind('click', function (e) {
-    //    $("#modalEmp").hide();
-    //    $('#loadImg').show();
-    //    $.getJSON("/api/AJAX/GetEmployeer?name=" + $(this).children(".card-body").children("a").children(".card-title").html(), function (data) {
-    //        $("#EmpName").html(data.name);
-    //        $("#delBtn").attr("href", "/Admin/DeleteEmployeer?id=" + data.id);
-    //        $("#EmpPhoto").attr("src", data.photo);
-    //        $("#MissionNum").html(data.missionNum);
-    //        $("#FailedNum").html(data.failedNum);
-    //        $("#Phone").val(data.phone);
-    //        $("#Email").val(data.email);
-    //        $("#modalEmp").show();
-    //        $('#loadImg').hide();
-    //    });
-    //});
+<script>
+    
 </script>

@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    .cell {
+        outline: 2px solid #000; /* Чёрная рамка */
+        width: 15px;
+        height: 15px;
+        background:white;
+    }
+</style>
+
+@for (int i = 1; i < 125; i++)
+{
+    <div class="row" style="flex-wrap:nowrap; display:-webkit-box">
+        @for (int j = 0; j < 125; j++)
+        {
+        <div class="cell">
+            <input class="x" type="number" name="x" value="@j" hidden />
+            <input class="y" type="number" name="y" value="@i" hidden />
+        </div>
+        }
+    </div>
+    
+}
+
+<script>
+    var brush = "red";
+    window.onload = function () {
+        $('.cell').bind('click', function (e) {
+
+            $(this).css("background", brush);
+        });
+        
+    };
+
+
+
+    //$('.card').bind('click', function (e) {
+    //    $("#modalEmp").hide();
+    //    $('#loadImg').show();
+    //    $.getJSON("/api/AJAX/GetEmployeer?name=" + $(this).children(".card-body").children("a").children(".card-title").html(), function (data) {
+    //        $("#EmpName").html(data.name);
+    //        $("#delBtn").attr("href", "/Admin/DeleteEmployeer?id=" + data.id);
+    //        $("#EmpPhoto").attr("src", data.photo);
+    //        $("#MissionNum").html(data.missionNum);
+    //        $("#FailedNum").html(data.failedNum);
+    //        $("#Phone").val(data.phone);
+    //        $("#Email").val(data.email);
+    //        $("#modalEmp").show();
+    //        $('#loadImg').hide();
+    //    });
+    //});
+</script>

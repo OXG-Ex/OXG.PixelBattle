@@ -62,6 +62,11 @@
 
         $('.cell').bind('click', function (e) {
             $(this).css("background", brush);
+
+            $.get('api/AJAX/AddCell?x=' + $(this).children('.x').val() + '&y=' + $(this).children('.y').val() + '&color=' + brush, function (data) {
+                alert('Загрузка завершена.');
+            });
+
             hubConnection.invoke("Send", $(this).children('.x').val(), $(this).children('.y').val(), brush);
         });
 

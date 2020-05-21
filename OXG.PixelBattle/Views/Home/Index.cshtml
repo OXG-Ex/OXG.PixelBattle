@@ -4,12 +4,33 @@
 
 <style>
     .cell {
-        outline: 2px solid #000; /* Чёрная рамка */
+        outline: 2px solid #000;
         width: 15px;
         height: 15px;
         background:white;
     }
+    .fixedbut {
+        position: fixed;
+        bottom: 20px;
+        border-radius: 120px;
+        right: 20px;
+        display: block;
+        background: #000000;
+        color: white;
+        text-decoration: none;
+        padding: 5px 15px;
+        font-size: 17px;
+    }
 </style>
+
+    <div class="fixedbut" style="bottom:140px; background:#00b900"> </div>
+    <div class="fixedbut" style="bottom: 120px; background: #0026ff"> </div>
+    <div class="fixedbut" style="bottom:100px; background:#b200ff"> </div>
+    <div class="fixedbut" style="bottom:80px; background:#808080"> </div>
+    <div class="fixedbut" style="bottom: 60px; background: #ff0000"> </div>
+    <div class="fixedbut" style="bottom:40px; background:#ffd800; "> </div>
+    <div class="fixedbut"> </div>
+
 
 @for (int i = 1; i < 125; i++)
 {
@@ -25,6 +46,7 @@
     
 }
 
+
 <script>
     var brush = "red";
     window.onload = function () {
@@ -33,7 +55,7 @@
             .build();
 
         hubConnection.on("Send", function (x, y, color) {
-            var id = String(x)+"-"+ String(y);
+            var id = String(x)+"-"+String(y);
             var selector = '#' + id;
             $(selector).css("background", color);
         });
@@ -43,6 +65,9 @@
             hubConnection.invoke("Send", $(this).children('.x').val(), $(this).children('.y').val(), brush);
         });
 
+        $('.fixedbut').bind('click', function (e) {
+            brush = $(this).css("background");
+        });
         hubConnection.start();    
     };
 </script>

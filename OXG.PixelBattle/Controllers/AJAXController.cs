@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OXG.PixelBattle.Models;
 
 namespace OXG.PixelBattle.Controllers
@@ -27,8 +28,8 @@ namespace OXG.PixelBattle.Controllers
             return Ok();
         }
 
-        public async Task<IActionResult> GetCells()
-        {//TODO: обработка на клиенте
+        public IActionResult GetCells()
+        {
             var cells = db.Cells;
             return new JsonResult(cells);
         }

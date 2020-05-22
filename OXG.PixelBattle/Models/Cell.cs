@@ -9,9 +9,9 @@ namespace OXG.PixelBattle.Models
     {
         public int Id { get; set; }
 
-        private int X { get; set; }
+        public int X { get; set; }
 
-        private int Y { get; set; }
+        public int Y { get; set; }
 
         public string Color { get; set; }
 

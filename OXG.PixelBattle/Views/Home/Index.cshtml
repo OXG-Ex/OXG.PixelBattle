@@ -49,10 +49,20 @@
 
 <script>
     var brush = "red";
+
     window.onload = function () {
         const hubConnection = new signalR.HubConnectionBuilder()
             .withUrl("/battle")
             .build();
+
+
+        $.getJSON("/api/AJAX/GetCells", function (data) {
+            for (var i in data) {
+                var cell = data[i];
+                $("#" + cell.x + "-" + cell.y).css("background", cell.color);
+            }
+            alert('Загрузка завершена.');
+        });
 
         hubConnection.on("Send", function (x, y, color) {
             var id = String(x)+"-"+String(y);
@@ -64,7 +74,7 @@
             $(this).css("background", brush);
 
             $.get('api/AJAX/AddCell?x=' + $(this).children('.x').val() + '&y=' + $(this).children('.y').val() + '&color=' + brush, function (data) {
-                alert('Загрузка завершена.');
+                
             });
 
             hubConnection.invoke("Send", $(this).children('.x').val(), $(this).children('.y').val(), brush);

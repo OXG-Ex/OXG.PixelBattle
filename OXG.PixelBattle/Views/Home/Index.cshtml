@@ -1,43 +1,14 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "PixelBattle";
 }
 
-<style>
-    .cell {
-        outline: 2px solid #000;
-        width: 15px;
-        height: 15px;
-        background: white;
-    }
 
-    .fixedbut {
-        position: fixed;
-        bottom: 20px;
-        border-radius: 120px;
-        right: 20px;
-        display: block;
-        background: #000000;
-        color: white;
-        text-decoration: none;
-        padding: 5px 15px;
-        font-size: 17px;
-    }
+<div class="preloader">
+    <div class="timer"></div>
+</div>
 
-    .seconds {
-        position: fixed;
-        top: 20px;
-        border-radius: 150px;
-        right: 20px;
-        display: block;
-        background: #808080;
-        color: white;
-        text-decoration: none;
-        padding: 25px 25px;
-        font-size: 17px;
-    }
-</style>
 
-<div class="fixedbut" style="bottom:140px; background:#00b900"> </div>
+<div class="fixedbut" style="bottom:140px; background:#00b900"> </div>@* Палитра выбора цвета *@
 <div class="fixedbut" style="bottom: 120px; background: #0026ff"> </div>
 <div class="fixedbut" style="bottom:100px; background:#b200ff"> </div>
 <div class="fixedbut" style="bottom:80px; background:#808080"> </div>
@@ -45,9 +16,9 @@
 <div class="fixedbut" style="bottom:40px; background:#ffd800; "> </div>
 <div class="fixedbut"> </div>
 
-<div class="seconds">0</div>
+<div class="seconds">0</div> @* Таймер *@
 
-@for (int i = 1; i < 125; i++)
+@for (int i = 1; i < 125; i++)@* Генерация двумерного массива клеток *@
 {
     <div class="row" style="flex-wrap:nowrap; display:-webkit-box">
         @for (int j = 0; j < 125; j++)
@@ -58,80 +29,6 @@
             </div>
         }
     </div>
-
 }
 
 
-<script>
-    var brush = "red";
-    var MayPaint = true;
-
-
-    window.onload = function () {
-        const hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl("/battle")
-            .build();
-
-
-        $.getJSON("/api/AJAX/GetCells", function (data) {
-            for (var i in data) {
-                var cell = data[i];
-                $("#" + cell.x + "-" + cell.y).css("background", cell.color);
-            }
-            alert('Загрузка завершена.');
-        });
-
-        hubConnection.on("Send", function (x, y, color) {
-            var id = String(x) + "-" + String(y);
-            var selector = '#' + id;
-            $(selector).css("background", color);
-        });
-
-
-
-        $('.cell').bind('click', function (e) {
-            if (MayPaint) {
-                $(this).css("background", brush);
-
-                $.get('api/AJAX/AddCell?x=' + $(this).children('.x').val() + '&y=' + $(this).children('.y').val() + '&color=' + brush, function (data) {
-
-                });
-
-                hubConnection.invoke("Send", $(this).children('.x').val(), $(this).children('.y').val(), brush);
-                MayPaint = false;
-                setTimeout(toPaint, 30000);
-
-                $('.seconds').html("30");
-
-                var _Seconds = $('.seconds').text(),
-                    int;
-                int = setInterval(function () { // запускаем интервал
-                    if (_Seconds > 0) {
-                        _Seconds--; // вычитаем 1
-                        $('.seconds').text(_Seconds); // выводим получившееся значение в блок
-                    } else {
-                        clearInterval(int); // очищаем интервал, чтобы он не продолжал работу при _Seconds = 0
-                    }
-                }, 1000);
-            }
-        });
-
-        $('.fixedbut').bind('click', function (e) {
-            brush = $(this).css("background");
-        });
-        hubConnection.start();
-
-
-        function toPaint() {
-            MayPaint = true;
-            
-        }
-
-        
-
-    };
-</script>
-
-<script>
-
-</script>

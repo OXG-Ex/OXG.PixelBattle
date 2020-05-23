@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace OXG.PixelBattle.Controllers
 {
+    /// <summary>
+    /// SignalR хаб игры
+    /// </summary>
     public class PixelBattleHub : Hub
     {
         public async Task Send(string x, string y, string color)

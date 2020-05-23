@@ -20,14 +20,33 @@ namespace OXG.PixelBattle.Controllers
             db = context;
         }
 
+        /// <summary>
+        /// Заносит закрашенную ячейку в базу данных
+        /// </summary>
+        /// <param name="x">X</param>
+        /// <param name="y">Y</param>
+        /// <param name="color">Цвет закрашенной клетки</param>
+        /// <returns></returns>
         public async Task<IActionResult> AddCell(int x, int y, string color)
-        {//TODO: проверка на существование ячейки
-            var cell = new Cell(x, y, color);
-            await db.Cells.AddAsync(cell);
+        {
+            var cell = await db.Cells.Where(c => c.X == x && c.Y == y).FirstOrDefaultAsync();
+            if (cell == null)
+            {
+                cell = new Cell(x, y, color);
+                await db.Cells.AddAsync(cell);
+            }
+            else
+            {
+                cell.Color = color;
+            }
             await db.SaveChangesAsync();
             return Ok();
         }
 
+        /// <summary>
+        /// Возвращает все закрашенные клетки в формате JSON
+        /// </summary>
+        /// <returns></returns>
         public IActionResult GetCells()
         {
             var cells = db.Cells;

@@ -18,6 +18,10 @@ namespace OXG.PixelBattle.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Возвращает представление для игры
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
             return View();

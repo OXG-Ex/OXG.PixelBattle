@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OXG.PixelBattle.Models
 {
-    public class PixelDbContext : DbContext
+    public class PixelDbContext : DbContext //Контекст БД
     {
         public DbSet<Cell> Cells { get; set; }
 
